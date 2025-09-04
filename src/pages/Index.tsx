@@ -6,6 +6,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Icon from "@/components/ui/icon";
 
 const Index = () => {
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
   const currentCompetitions = [
     {
       id: 1,
@@ -69,13 +75,13 @@ const Index = () => {
             </div>
             
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#" className="text-gray-700 hover:text-academic transition-colors">Главная</a>
-              <a href="#competitions" className="text-gray-700 hover:text-academic transition-colors">Конкурсы</a>
-              <a href="#olympiads" className="text-gray-700 hover:text-academic transition-colors">Олимпиады</a>
-              <a href="#results" className="text-gray-700 hover:text-academic transition-colors">Результаты</a>
-              <a href="#ratings" className="text-gray-700 hover:text-academic transition-colors">Рейтинги</a>
-              <a href="#archive" className="text-gray-700 hover:text-academic transition-colors">Архив</a>
-              <a href="#contacts" className="text-gray-700 hover:text-academic transition-colors">Контакты</a>
+              <button onClick={() => scrollToSection('hero')} className="text-gray-700 hover:text-academic transition-colors cursor-pointer">Главная</button>
+              <button onClick={() => scrollToSection('competitions')} className="text-gray-700 hover:text-academic transition-colors cursor-pointer">Конкурсы</button>
+              <button onClick={() => scrollToSection('ratings')} className="text-gray-700 hover:text-academic transition-colors cursor-pointer">Олимпиады</button>
+              <button onClick={() => scrollToSection('ratings')} className="text-gray-700 hover:text-academic transition-colors cursor-pointer">Результаты</button>
+              <button onClick={() => scrollToSection('ratings')} className="text-gray-700 hover:text-academic transition-colors cursor-pointer">Рейтинги</button>
+              <button onClick={() => scrollToSection('contacts')} className="text-gray-700 hover:text-academic transition-colors cursor-pointer">Архив</button>
+              <button onClick={() => scrollToSection('contacts')} className="text-gray-700 hover:text-academic transition-colors cursor-pointer">Контакты</button>
             </div>
 
             <Button className="bg-academic hover:bg-academic-dark">
@@ -87,7 +93,7 @@ const Index = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="py-20 px-4">
+      <section id="hero" className="py-20 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-5xl font-bold text-gray-900 mb-6">
             Платформа для образовательных
@@ -311,7 +317,7 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12 px-4">
+      <footer id="contacts" className="bg-gray-900 text-white py-12 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
