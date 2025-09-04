@@ -3,14 +3,48 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import Icon from "@/components/ui/icon";
+import { useState } from "react";
 
 const Index = () => {
+  const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
+  const [registrationData, setRegistrationData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    school: '',
+    grade: '',
+    city: '',
+    subjects: '',
+    experience: ''
+  });
+
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  const handleRegistration = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Данные регистрации:', registrationData);
+    setIsRegistrationOpen(false);
+    // Здесь будет отправка данных на сервер
+    alert('Регистрация успешно отправлена! Мы свяжемся с вами в ближайшее время.');
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setRegistrationData(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
   const currentCompetitions = [
     {
@@ -84,10 +118,147 @@ const Index = () => {
               <button onClick={() => scrollToSection('contacts')} className="text-gray-700 hover:text-academic transition-colors cursor-pointer">Контакты</button>
             </div>
 
-            <Button className="bg-academic hover:bg-academic-dark">
-              <Icon name="UserPlus" size={16} className="mr-2" />
-              Регистрация
-            </Button>
+            <Dialog open={isRegistrationOpen} onOpenChange={setIsRegistrationOpen}>
+              <DialogTrigger asChild>
+                <Button className="bg-academic hover:bg-academic-dark">
+                  <Icon name="UserPlus" size={16} className="mr-2" />
+                  Регистрация
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle className="flex items-center text-2xl">
+                    <Icon name="GraduationCap" className="mr-2 text-academic" />
+                    Регистрация участника
+                  </DialogTitle>
+                  <DialogDescription>
+                    Заполните форму для участия в образовательных конкурсах и олимпиадах
+                  </DialogDescription>
+                </DialogHeader>
+                <form onSubmit={handleRegistration} className="space-y-6">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="firstName">Имя *</Label>
+                      <Input
+                        id="firstName"
+                        value={registrationData.firstName}
+                        onChange={(e) => handleInputChange('firstName', e.target.value)}
+                        required
+                        placeholder="Введите ваше имя"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="lastName">Фамилия *</Label>
+                      <Input
+                        id="lastName"
+                        value={registrationData.lastName}
+                        onChange={(e) => handleInputChange('lastName', e.target.value)}
+                        required
+                        placeholder="Введите вашу фамилию"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="email">Email *</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        value={registrationData.email}
+                        onChange={(e) => handleInputChange('email', e.target.value)}
+                        required
+                        placeholder="example@mail.com"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="phone">Телефон</Label>
+                      <Input
+                        id="phone"
+                        value={registrationData.phone}
+                        onChange={(e) => handleInputChange('phone', e.target.value)}
+                        placeholder="+7 (999) 123-45-67"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="school">Образовательное учреждение *</Label>
+                    <Input
+                      id="school"
+                      value={registrationData.school}
+                      onChange={(e) => handleInputChange('school', e.target.value)}
+                      required
+                      placeholder="Название школы, гимназии, лицея"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="grade">Класс *</Label>
+                      <Select onValueChange={(value) => handleInputChange('grade', value)}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Выберите класс" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="9">9 класс</SelectItem>
+                          <SelectItem value="10">10 класс</SelectItem>
+                          <SelectItem value="11">11 класс</SelectItem>
+                          <SelectItem value="university-1">1 курс университета</SelectItem>
+                          <SelectItem value="university-2">2 курс университета</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label htmlFor="city">Город *</Label>
+                      <Input
+                        id="city"
+                        value={registrationData.city}
+                        onChange={(e) => handleInputChange('city', e.target.value)}
+                        required
+                        placeholder="Ваш город"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="subjects">Интересующие предметы *</Label>
+                    <Input
+                      id="subjects"
+                      value={registrationData.subjects}
+                      onChange={(e) => handleInputChange('subjects', e.target.value)}
+                      required
+                      placeholder="Математика, Физика, Химия..."
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="experience">Опыт участия в олимпиадах</Label>
+                    <Textarea
+                      id="experience"
+                      value={registrationData.experience}
+                      onChange={(e) => handleInputChange('experience', e.target.value)}
+                      placeholder="Расскажите о вашем опыте участия в конкурсах и олимпиадах"
+                      rows={3}
+                    />
+                  </div>
+
+                  <div className="flex justify-between pt-4">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setIsRegistrationOpen(false)}
+                    >
+                      Отмена
+                    </Button>
+                    <Button type="submit" className="bg-academic hover:bg-academic-dark">
+                      <Icon name="Send" size={16} className="mr-2" />
+                      Отправить заявку
+                    </Button>
+                  </div>
+                </form>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
       </nav>
